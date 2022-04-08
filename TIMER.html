@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIMER</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <style>
+        .container {
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        #timer {
+            font-size: 36px;
+            border: 1px solid #ccc;
+            padding: 50px;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .5);
+        }
+
+        .btn {
+            width: 50%;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, .5);
+        }
+
+        #riset_stop {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p id="timer">00:00:00</p>
+        <div>
+            <button id="start_stop" class="btn btn-lg btn-primary">START</button>
+            <button id="riset_stop" class="btn btn-lg secondary">RESET</button>
+
+        </div>
+    </div>
+    <script>
+        var start;
+        var timer_id;
+
+        document.getElementById('start_stop').addEventListener('mousedown', function () {
+            if (this.innerHTML === 'START') {
+                start = new Date();
+
+                timer_id = setInterval(gotimer, 10);
+
+                this.innerHTML = 'STOP';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-danger');
+
+            } else {
+                clearInterval(timer_id);
+                this.innerHTML = 'START';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-primary');
+
+            }
+        });
+
+        document.getElementById('riset_stop').addEventListener('mousedown', function () {
+            clearInterval(timer_id);
+            document.getElementById('timer').innerHTML = '00:00:00';
+        });
+
+
+        var addZero = function (value) {
+            if (value < 10) {
+                value = '0' + value;
+            }
+            return value;
+        }
+
+        var gotimer = function () {
+            var now = new Date();
+
+            var milli = now.getTime() - start.getTime();
+            var seconds = Math.floor(milli / 1000);
+            var minutes = Math.floor(seconds / 60);
+            var hours = Math.floor(minutes / 60);
+
+            seconds = seconds - minutes * 60;
+            minutes = minutes - hours * 60;
+
+            document.getElementById('timer').innerHTML = addZero(hours) + ':' + addZero(minutes) + ':' + addZero(seconds);
+        }
+    </script>
+
+</body>
+
+</html>
